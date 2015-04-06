@@ -5,9 +5,11 @@ MAINTAINER Rony Dray <contact@obigroup.fr>
 RUN echo 'deb http://http.debian.net/debian wheezy main contrib non-free' >> /etc/apt/sources.list
 RUN apt-get -y update
 RUN apt-get -y install g++
-RUN apt-get install --quiet --assume-yes python-software-properties \
+RUN apt-get install --quiet --assume-yes \
+	python-software-properties \
 	python-pip \
 	nginx \
+	libssl-dev \
 	curl
 RUN nginx -t
 
