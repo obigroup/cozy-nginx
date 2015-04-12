@@ -2,9 +2,10 @@
 ```
 docker build -t obigroup/cozy-nginx .
 ```
+# Dependencies
+[Cozy Apps](https://registry.hub.docker.com/u/obigroup/cozy-apps/)
 
 # Run:
-Need : [Cozy Apps](https://registry.hub.docker.com/u/obigroup/cozy-apps/)
 With fig :
 ```
 nginx:
