@@ -8,13 +8,15 @@ Need : [Cozy Apps](https://registry.hub.docker.com/u/obigroup/cozy-apps/)
 With fig :
 ```
 nginx:
-    build: nginx
+    image: obigroup/cozy-nginx
+    domainname: cozy.dev
     links:
     - cozyapps
+    volumes:
+    - yourhostpathhere:/var/log/nginx
     ports:
     - "127.0.0.3:80:80"
     - "127.0.0.3:443:443"
-    domainname: cozy.dev
 ```
 
 #More about updates

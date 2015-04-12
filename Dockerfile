@@ -6,18 +6,18 @@ RUN echo 'deb http://http.debian.net/debian wheezy main contrib non-free' >> /et
 RUN apt-get -y update
 RUN apt-get -y install g++
 RUN apt-get install --quiet --assume-yes \
-	python-software-properties \
-	python-pip \
-	nginx \
-	libssl-dev \
-	curl
+    python-pip \
+    nginx \
+    libssl-dev \
+    curl \
+    && apt-get clean
+
 RUN nginx -t
 
 # Install supevisord
 RUN pip install supervisor
 
 # Clean APT cache for a lighter image
-RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Create Cozy users
@@ -37,6 +37,10 @@ RUN mkdir -p /var/log/supervisor
 RUN chmod 774 /var/log/supervisor
 RUN /usr/local/bin/supervisord -c /etc/supervisord.conf
 
+# Need ENV VARS:
+ENV COZYAPPS_HOST cozyapps
+ENV COZYAPPS_PORT 9104
+
 # Configure Nginx and check configuration by restarting the service
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 #Need cozy.conf.tmp to update cozy.conf with new proxy host and port
@@ -45,7 +49,6 @@ ADD nginx/cozy.conf /etc/nginx/sites-available/cozy.conf
 RUN chmod 0644 /etc/nginx/sites-available/cozy.conf
 RUN rm /etc/nginx/sites-enabled/default
 RUN ln -s /etc/nginx/sites-available/cozy.conf /etc/nginx/sites-enabled/cozy.conf
-RUN nginx -t
 
 # Copy supervisor configuration files
 ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
@@ -53,7 +56,7 @@ RUN chmod 0644 /etc/supervisor/conf.d/*
 
 EXPOSE 80 443
 
-VOLUME ["/etc/cozy"]
+# VOLUME ["/etc/cozy"]
 
 ADD sh/run.sh /home/run.sh
 WORKDIR /home
