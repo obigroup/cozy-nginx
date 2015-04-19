@@ -43,8 +43,6 @@ ENV COZYAPPS_PORT 9104
 
 # Configure Nginx and check configuration by restarting the service
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
-#Need cozy.conf.tmp to update cozy.conf with new proxy host and port
-ADD nginx/cozy.conf /etc/nginx/sites-available/cozy.conf.tmp
 ADD nginx/cozy.conf /etc/nginx/sites-available/cozy.conf
 RUN chmod 0644 /etc/nginx/sites-available/cozy.conf
 RUN rm /etc/nginx/sites-enabled/default
