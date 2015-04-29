@@ -40,21 +40,22 @@ RUN /usr/local/bin/supervisord -c /etc/supervisord.conf
 # Need ENV VARS:
 ENV COZYAPPS_HOST cozyapps
 ENV COZYAPPS_PORT 9104
+# Set to true if multi cozy cloud intances on a same server
+ENV DISABLE_SSL false
 
 # Configure Nginx and check configuration by restarting the service
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
 ADD nginx/cozy.conf /etc/nginx/sites-available/cozy.conf
-RUN chmod 0644 /etc/nginx/sites-available/cozy.conf
+ADD nginx/cozy-ssl.conf /etc/nginx/sites-available/cozy-ssl.conf
+RUN chmod 0644 /etc/nginx/sites-available/*
 RUN rm /etc/nginx/sites-enabled/default
-RUN ln -s /etc/nginx/sites-available/cozy.conf /etc/nginx/sites-enabled/cozy.conf
+# RUN ln -s /etc/nginx/sites-available/cozy.conf /etc/nginx/sites-enabled/cozy.conf
 
 # Copy supervisor configuration files
 ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 RUN chmod 0644 /etc/supervisor/conf.d/*
 
 EXPOSE 80 443
-
-# VOLUME ["/etc/cozy"]
 
 ADD sh/run.sh /home/run.sh
 WORKDIR /home
