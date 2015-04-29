@@ -49,7 +49,6 @@ ADD nginx/cozy.conf /etc/nginx/sites-available/cozy.conf
 ADD nginx/cozy-ssl.conf /etc/nginx/sites-available/cozy-ssl.conf
 RUN chmod 0644 /etc/nginx/sites-available/*
 RUN rm /etc/nginx/sites-enabled/default
-# RUN ln -s /etc/nginx/sites-available/cozy.conf /etc/nginx/sites-enabled/cozy.conf
 
 # Copy supervisor configuration files
 ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
